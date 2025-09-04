@@ -1,0 +1,72 @@
+﻿[
+  {
+    "id": 1,
+    "titolo": "Motore",
+    "contenuto": "Il motore della Hyundai i20N è un 1.6 turbo a quattro cilindri con prestazioni elevate.",
+    "tags": ["meccanica", "motore", "prestazioni"],
+    "categoria": "Meccanica"
+  },
+  {
+    "id": 2,
+    "titolo": "Freni",
+    "contenuto": "I freni sono a disco ventilato con ABS e assistenza elettronica per una guida sicura.",
+    "tags": ["sicurezza", "freni", "tecnica"],
+    "categoria": "Meccanica"
+  },
+  {
+    "id": 3,
+    "titolo": "Sospensioni",
+    "contenuto": "Le sospensioni sportive garantiscono stabilità nelle curve ad alta velocità.",
+    "tags": ["assetto", "handling", "sospensioni"],
+    "categoria": "Meccanica"
+  },
+  {
+    "id": 4,
+    "titolo": "Interni",
+    "contenuto": "Gli interni sono ergonomici con sedili sportivi e materiali di alta qualità.",
+    "tags": ["comfort", "interni", "design"],
+    "categoria": "Interni"
+  },
+  {
+    "id": 5,
+    "titolo": "Infotainment",
+    "contenuto": "Il sistema infotainment supporta Android Auto e Apple CarPlay, con display da 10,25 pollici.",
+    "tags": ["tecnologia", "multimedia", "display"],
+    "categoria": "Interni"
+  },
+  {
+    "id": 6,
+    "titolo": "Sicurezza",
+    "contenuto": "Dotazioni di sicurezza includono Airbag, Lane Keeping Assist, e frenata autonoma d'emergenza.",
+    "tags": ["sicurezza", "airbag", "ADAS"],
+    "categoria": "Sicurezza"
+  },
+  {
+    "id": 7,
+    "titolo": "Ruote e Pneumatici",
+    "contenuto": "Le ruote da 18 pollici con pneumatici sportivi garantiscono grip e stabilità.",
+    "tags": ["gomme", "ruote", "performance"],
+    "categoria": "Meccanica"
+  },
+  {
+    "id": 8,
+    "titolo": "Aerodinamica",
+    "contenuto": "Lo spoiler posteriore e il diffusore migliorano l'efficienza aerodinamica e la stabilità.",
+    "tags": ["design", "aerodinamica", "performance"],
+    "categoria": "Design"
+  },
+  {
+    "id": 9,
+    "titolo": "Cambio",
+    "contenuto": "Il cambio manuale a 6 marce offre cambi rapidi e precisi per una guida sportiva.",
+    "tags": ["motore", "cambio", "guidasportiva"],
+    "categoria": "Meccanica"
+  },
+  {
+    "id": 10,
+    "titolo": "Illuminazione",
+    "contenuto": "I fari LED anteriori e posteriori garantiscono ottima visibilità e stile moderno.",
+    "tags": ["luci", "design", "sicurezza"],
+    "categoria": "Design"
+  }
+]
