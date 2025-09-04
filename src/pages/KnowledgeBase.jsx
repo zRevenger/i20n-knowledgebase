@@ -1,6 +1,7 @@
 ﻿import { useState } from "react";
 import ArticleCard from "../components/ArticleCard";
 import knowledgeData from "../data/knowledge.json";
+import Sidebar from "../components/Sidebar.jsx";
 
 export default function KnowledgeBase({ currentTheme }) {
     const [search, setSearch] = useState("");
@@ -18,6 +19,8 @@ export default function KnowledgeBase({ currentTheme }) {
 
     return (
         <div className="max-w-6xl mx-auto mt-8 px-6 flex flex-col gap-6">
+
+            <Sidebar currentTheme={currentTheme} setSearch={setSearch} />
 
             {/* Search bar */}
             <div className="w-full flex justify-center">

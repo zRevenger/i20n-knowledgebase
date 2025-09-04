@@ -33,7 +33,7 @@ export default function CategoriesPage({ currentTheme }) {
             {/* Griglia categorie */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredCategories.map(category => (
-                    <Link key={category} to={`/categoria/${category}`}>
+                    <Link key={category} to={`/categorie/${category}`}>
                         <Card
                             title={category}
                             content={`Visualizza tutti gli articoli della categoria ${category}.`}

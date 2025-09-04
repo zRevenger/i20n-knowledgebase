@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import knowledgeData from "../data/knowledge.json";
 import ArticleCard from "../components/ArticleCard";
+import Sidebar from "../components/Sidebar.jsx";
 
 export default function CategoryPage({ currentTheme }) {
     const { categoryName } = useParams(); // prende la categoria dall'URL
@@ -30,7 +31,7 @@ export default function CategoryPage({ currentTheme }) {
             <h2 className="text-2xl font-bold text-center mb-4">
                 Categoria: {categoryName}
             </h2>
-
+            <Sidebar currentTheme={currentTheme} setSearch={setSearch} />
             {/* Search bar */}
             <div className="w-full flex justify-center">
                 <input

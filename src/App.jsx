@@ -20,7 +20,7 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<KnowledgeBase currentTheme={currentTheme} />} />
                     <Route path="/categorie" element={<CategoriesPage currentTheme={currentTheme} />} />
-                    <Route path="/categoria/:categoryName" element={<CategoryPage currentTheme={currentTheme} />} />
+                    <Route path="/categorie/:categoryName" element={<CategoryPage currentTheme={currentTheme} />} />
                 </Routes>
             </main>
         </div>
