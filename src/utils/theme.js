@@ -24,3 +24,11 @@
         tagBg: "bg-[var(--color-gray-700)]",
     },
 };
+
+export const categoryGradients = {
+    meccanica: "from-red-400 via-orange-400 to-yellow-400",
+    interni: "from-green-400 via-teal-400 to-cyan-400",
+    sicurezza: "from-indigo-400 via-purple-400 to-pink-400",
+    design: "from-blue-400 via-indigo-400 to-purple-400",
+    default: "from-gray-400 via-gray-500 to-gray-600"
+};

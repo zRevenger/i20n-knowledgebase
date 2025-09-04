@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "./components/Header";
 import KnowledgeBase from "./pages/KnowledgeBase";
-import { themes } from "./theme";
+import { themes } from "./utils/theme.js";
 
 export default function App() {
     const [theme, setTheme] = useState("light");
