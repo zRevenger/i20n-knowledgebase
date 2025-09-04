@@ -1,4 +1,5 @@
-﻿import nLogo from "../assets/n-logo.svg";
+﻿import { Link } from "react-router-dom";
+import nLogo from "../assets/n-logo.svg";
 
 export default function Header({ theme, setTheme, currentTheme }) {
     return (
@@ -8,16 +9,33 @@ export default function Header({ theme, setTheme, currentTheme }) {
                 {/* Logo + titolo */}
                 <div className="flex items-center gap-3">
                     <img src={nLogo} alt="Hyundai N Logo" className="h-8 w-auto" />
-                    <h1 className="text-xl font-bold">Hyundai i20N - Knowledge Base</h1>
+                    <h1 className={`text-xl font-bold ${currentTheme.headerText}`}>
+                        Hyundai i20N - Knowledge Base
+                    </h1>
                 </div>
+
+                {/* Navigazione */}
+                <nav className="flex items-center gap-4 mr-4">
+                    <Link to="/" className={`hover:underline ${currentTheme.headerText}`}>
+                        Home
+                    </Link>
+                    <Link to="/categorie" className={`hover:underline ${currentTheme.headerText}`}>
+                        Categorie
+                    </Link>
+                    {/* Aggiungi altre categorie se vuoi */}
+                </nav>
 
                 {/* Toggle tema */}
                 <button
                     onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                     className={`relative w-12 h-12 flex items-center justify-center rounded-full border ${currentTheme.headerBorder} ${currentTheme.buttonBg} ${currentTheme.buttonText} transition-all duration-500 ease-in-out`}
                 >
-                    <span className={`absolute transition-all duration-500 transform ${theme === "light" ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 -rotate-45"}`}>☀️</span>
-                    <span className={`absolute transition-all duration-500 transform ${theme === "dark" ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 -rotate-45"}`}>🌙</span>
+                    <span className={`absolute transition-all duration-500 transform ${theme === "light" ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 -rotate-45"}`}>
+                        ☀️
+                    </span>
+                    <span className={`absolute transition-all duration-500 transform ${theme === "dark" ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 -rotate-45"}`}>
+                        🌙
+                    </span>
                 </button>
 
             </div>

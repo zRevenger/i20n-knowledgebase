@@ -1,5 +1,20 @@
 ﻿@import "tailwindcss";
 
+html {
+    overflow-y: scroll;
+}
+
+/* Chrome/Safari */
+html::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* opzionale */
+}
+
+/* Firefox */
+html {
+    scrollbar-width: none; /* nasconde in Firefox */
+}
+
 @theme {
     /* Grigi chiari */
     --color-gray-50: oklch(0.98 0 0);
