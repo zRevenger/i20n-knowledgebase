@@ -39,7 +39,7 @@ export default function Header({ theme, setTheme, currentTheme }) {
                         {/* Sole */}
                         <SunIcon
                             className={`absolute w-6 h-6 transition-all duration-500 transform
-                                ${theme === "light" ? "opacity-100 scale-100 rotate-0 group-hover:text-yellow-400" : "opacity-0 scale-50 -rotate-45"}
+                                ${theme === "light" ? "opacity-100 scale-100 rotate-0 group-hover:text-yellow-500" : "opacity-0 scale-50 -rotate-45"}
                             `}
                         />
                         {/* Luna */}
