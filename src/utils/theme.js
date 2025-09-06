@@ -3,7 +3,7 @@
         bg: "bg-gray-100", // sfondo soft moderno
         text: "text-gray-900",
 
-        headerBg: "bg-gray-50/80", // header chiaro ma separato
+        headerBg: "bg-gray-50/70", // header chiaro ma separato
         headerBorder: "border-gray-200",
         headerText: "text-gray-900",
 
@@ -22,7 +22,7 @@
         bg: "bg-gray-900",
         text: "text-gray-100",
 
-        headerBg: "bg-gray-800/80",
+        headerBg: "bg-gray-800/70",
         headerBorder: "border-gray-700",
         headerText: "text-gray-100",
 

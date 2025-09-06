@@ -6,6 +6,7 @@ import CategoriesPage from "./pages/CategoriesPage";
 import CategoryPage from "./pages/CategoryPage";
 import Footer from "./components/Footer";
 import { themes } from "./utils/theme.js";
+import Homepage from "./pages/Homepage.jsx";
 
 export default function App() {
     const [theme, setTheme] = useState("light");
@@ -20,9 +21,10 @@ export default function App() {
             <Header theme={theme} setTheme={setTheme} currentTheme={currentTheme} />
 
             {/* Main content */}
-            <main className="flex-1 pt-20 px-6">
+            <main className="flex-1 pt-20">
                 <Routes>
-                    <Route path="/" element={<KnowledgeBase currentTheme={currentTheme} />} />
+                    <Route path="/" element={<Homepage currentTheme={currentTheme} />} />
+                    <Route path="/esplora" element={<KnowledgeBase currentTheme={currentTheme} />} />
                     <Route path="/categorie" element={<CategoriesPage currentTheme={currentTheme} />} />
                     <Route path="/categorie/:categoryName" element={<CategoryPage currentTheme={currentTheme} />} />
                 </Routes>

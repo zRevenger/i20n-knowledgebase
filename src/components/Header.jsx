@@ -22,6 +22,9 @@ export default function Header({ theme, setTheme, currentTheme }) {
                     <Link to="/" className={`hover:underline ${currentTheme.headerText}`}>
                         Home
                     </Link>
+                    <Link to="/esplora" className={`hover:underline ${currentTheme.headerText}`}>
+                        Esplora
+                    </Link>
                     <Link to="/categorie" className={`hover:underline ${currentTheme.headerText}`}>
                         Categorie
                     </Link>
