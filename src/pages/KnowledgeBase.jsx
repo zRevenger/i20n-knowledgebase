@@ -3,6 +3,7 @@ import ArticleCard from "../components/ArticleCard";
 import knowledgeData from "../data/knowledge.json";
 import Sidebar from "../components/Sidebar.jsx";
 import SearchBar from "../components/Searchbar.jsx";
+import CardGrid from "../components/CardGrid.jsx";
 
 export default function KnowledgeBase({ currentTheme }) {
     const [search, setSearch] = useState("");
@@ -32,15 +33,13 @@ export default function KnowledgeBase({ currentTheme }) {
             />
 
             {/* Griglia articoli */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredArticles.map((article) => (
-                    <ArticleCard
-                        key={article.id}
-                        article={article}
-                        currentTheme={currentTheme}
-                    />
-                ))}
-            </div>
+            <CardGrid
+                items={filteredArticles}
+                emptyMessage="Nessun articolo trovato."
+                renderItem={(article) => (
+                    <ArticleCard article={article} currentTheme={currentTheme} />
+                )}
+            />
         </div>
     );
 }

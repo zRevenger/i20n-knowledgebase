@@ -3,6 +3,7 @@ import knowledgeData from "../data/knowledge.json";
 import Card from "../components/Card";
 import { useState } from "react";
 import SearchBar from "../components/SearchBar.jsx";
+import CardGrid from "../components/CardGrid.jsx";
 
 export default function CategoriesPage({ currentTheme }) {
     const [search, setSearch] = useState("");
@@ -27,9 +28,10 @@ export default function CategoriesPage({ currentTheme }) {
             />
 
             {/* Griglia categorie */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredCategories.map(category => (
-                    <Link key={category} to={`/categorie/${category}`}>
+            <CardGrid
+                items={filteredCategories}
+                renderItem={(category) => (
+                    <Link key={category}  to={`/categorie/${category}`}>
                         <Card
                             title={category}
                             content={`Visualizza tutti gli articoli della categoria ${category}.`}
@@ -37,8 +39,9 @@ export default function CategoriesPage({ currentTheme }) {
                             currentTheme={currentTheme}
                         />
                     </Link>
-                ))}
-            </div>
+                )}
+                emptyMessage="Nessun articolo trovato in questa categoria."
+            />
         </div>
     );
 }

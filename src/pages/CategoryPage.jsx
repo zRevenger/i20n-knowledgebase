@@ -5,6 +5,7 @@ import knowledgeData from "../data/knowledge.json";
 import ArticleCard from "../components/ArticleCard";
 import Sidebar from "../components/Sidebar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
+import CardGrid from "../components/CardGrid.jsx";
 
 export default function CategoryPage({ currentTheme }) {
     const { categoryName } = useParams(); // prende la categoria dall'URL
@@ -42,21 +43,13 @@ export default function CategoryPage({ currentTheme }) {
             />
 
             {/* Griglia articoli */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredArticles.length > 0 ? (
-                    filteredArticles.map((article) => (
-                        <ArticleCard
-                            key={article.id}
-                            article={article}
-                            currentTheme={currentTheme}
-                        />
-                    ))
-                ) : (
-                    <p className="text-center text-gray-500">
-                        Nessun articolo trovato in questa categoria.
-                    </p>
+            <CardGrid
+                items={filteredArticles}
+                renderItem={(article) => (
+                    <ArticleCard article={article} currentTheme={currentTheme} />
                 )}
-            </div>
+                emptyMessage="Nessun articolo trovato in questa categoria."
+            />
         </div>
     );
 }

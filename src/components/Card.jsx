@@ -6,10 +6,11 @@ export default function Card({ title, content, category = "default", tags = [], 
     return (
         <div
             className={`
-        relative p-6 rounded-2xl shadow-md transition-transform transform hover:-translate-y-1 hover:shadow-xl
-        min-h-[240px] flex flex-col border
-        ${currentTheme.cardBg} ${currentTheme.cardBorder} ${currentTheme.cardText}
-      `}
+    relative p-6 rounded-2xl min-h-[240px] flex flex-col border
+    ${currentTheme.cardBg} ${currentTheme.cardBorder} ${currentTheme.cardText}
+    transform transition-all duration-200 ease-in-out
+    hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]
+  `}
         >
             {/* Titolo con badge verticale */}
             <div className="mb-4 flex items-center gap-3">
@@ -27,13 +28,13 @@ export default function Card({ title, content, category = "default", tags = [], 
                         <span
                             key={tag}
                             className={`
-                px-3 py-1 text-xs font-medium rounded-full transition
-                ${currentTheme.tagBg} ${currentTheme.tagText}
-                hover:brightness-110
-              `}
+            px-3 py-1 text-xs font-medium rounded-full transition
+            ${currentTheme.tagBg} ${currentTheme.tagText}
+            hover:brightness-110
+          `}
                         >
-              {tag}
-            </span>
+          {tag}
+        </span>
                     ))}
                 </div>
             )}
