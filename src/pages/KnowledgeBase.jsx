@@ -2,6 +2,7 @@
 import ArticleCard from "../components/ArticleCard";
 import knowledgeData from "../data/knowledge.json";
 import Sidebar from "../components/Sidebar.jsx";
+import SearchBar from "../components/Searchbar.jsx";
 
 export default function KnowledgeBase({ currentTheme }) {
     const [search, setSearch] = useState("");
@@ -23,15 +24,12 @@ export default function KnowledgeBase({ currentTheme }) {
             <Sidebar currentTheme={currentTheme} setSearch={setSearch} />
 
             {/* Search bar */}
-            <div className="w-full flex justify-center">
-                <input
-                    type="text"
-                    placeholder="Cerca articoli, tag o contenuto..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className={`w-full sm:w-2/3 lg:w-1/2 px-6 py-3 rounded-full border-2 ${currentTheme.cardBorder} ${currentTheme.cardBg} ${currentTheme.cardText} placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-400 transition shadow-md`}
-                />
-            </div>
+            <SearchBar
+                search={search}
+                setSearch={setSearch}
+                currentTheme={currentTheme}
+                placeholder="Cerca articoli, tag o contenuto..."
+            />
 
             {/* Griglia articoli */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

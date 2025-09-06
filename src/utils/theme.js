@@ -1,27 +1,40 @@
 ﻿export const themes = {
     light: {
-        bg: "bg-[var(--color-gray-50)]",
-        text: "text-[var(--color-gray-900)]",
-        headerBg: "bg-[var(--color-gray-header-light)]",
-        headerBorder: "border-[var(--color-gray-300)]",
-        cardBg: "bg-[var(--color-gray-50)]",
-        cardBorder: "border-[var(--color-gray-300)]",
-        cardText: "text-[var(--color-gray-900)]",
-        buttonBg: "bg-[var(--color-gray-200)]",
-        buttonText: "text-[var(--color-gray-900)]",
-        tagBg: "bg-[var(--color-gray-200)]",
+        bg: "bg-gray-100", // sfondo soft moderno
+        text: "text-gray-900",
+
+        headerBg: "bg-gray-50/80", // header chiaro ma separato
+        headerBorder: "border-gray-200",
+        headerText: "text-gray-900",
+
+        cardBg: "bg-white shadow-md", // card più “material style”
+        cardBorder: "border-gray-200",
+        cardText: "text-gray-800",
+
+        tagBg: "bg-gray-200",
+        tagText: "text-gray-700",
+
+        buttonBg: "bg-gray-100 hover:bg-gray-200",
+        buttonText: "text-gray-900",
     },
+
     dark: {
-        bg: "bg-[var(--color-gray-850)]",           // grigio neutro scuro
-        text: "text-[var(--color-gray-50)]",       // quasi bianco
-        headerBg: "bg-[var(--color-gray-header-dark)]", // header semitrasparente
-        headerBorder: "border-[var(--color-gray-700)]",
-        cardBg: "bg-[var(--color-gray-800)]",
-        cardBorder: "border-[var(--color-gray-700)]",
-        cardText: "text-[var(--color-gray-50)]",
-        buttonBg: "bg-[var(--color-gray-700)]",
-        buttonText: "text-[var(--color-gray-50)]",
-        tagBg: "bg-[var(--color-gray-700)]",
+        bg: "bg-gray-900",
+        text: "text-gray-100",
+
+        headerBg: "bg-gray-800/80",
+        headerBorder: "border-gray-700",
+        headerText: "text-gray-100",
+
+        cardBg: "bg-gray-800 shadow-gray-700/65 shadow-sm", // più spessore con ombra
+        cardBorder: "border-gray-700",
+        cardText: "text-gray-200",
+
+        tagBg: "bg-gray-700",
+        tagText: "text-gray-200",
+
+        buttonBg: "bg-gray-800 hover:bg-gray-700",
+        buttonText: "text-gray-100",
     },
 };
 

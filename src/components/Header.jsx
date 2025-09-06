@@ -31,10 +31,20 @@ export default function Header({ theme, setTheme, currentTheme }) {
                 <div className="ml-6">
                     <button
                         onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-                        className={`relative w-12 h-12 flex items-center justify-center rounded-full border ${currentTheme.headerBorder} ${currentTheme.buttonBg} ${currentTheme.buttonText} transition-all duration-500 ease-in-out`}
+                        className={`relative w-12 h-12 flex items-center justify-center rounded-full border ${currentTheme.headerBorder} ${currentTheme.buttonBg} ${currentTheme.buttonText} transition-all duration-500 ease-in-out group`}
                     >
-                        <SunIcon className={`absolute w-6 h-6 transition-all duration-500 transform ${theme === "light" ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 -rotate-45"}`} />
-                        <MoonIcon className={`absolute w-6 h-6 transition-all duration-500 transform ${theme === "dark" ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 -rotate-45"}`} />
+                        {/* Sole */}
+                        <SunIcon
+                            className={`absolute w-6 h-6 transition-all duration-500 transform
+                                ${theme === "light" ? "opacity-100 scale-100 rotate-0 group-hover:text-yellow-400" : "opacity-0 scale-50 -rotate-45"}
+                            `}
+                        />
+                        {/* Luna */}
+                        <MoonIcon
+                            className={`absolute w-6 h-6 transition-all duration-500 transform
+                                ${theme === "dark" ? "opacity-100 scale-100 rotate-0 group-hover:text-indigo-400" : "opacity-0 scale-50 -rotate-45"}
+                            `}
+                        />
                     </button>
                 </div>
 

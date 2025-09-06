@@ -29,14 +29,19 @@ export default function Sidebar({ currentTheme }) {
                         <li key={cat}>
                             <Link
                                 to={`/categorie/${cat.toLowerCase()}`}
+                                aria-current={isActive ? "page" : undefined}
                                 className={`
-                                    flex items-center gap-3 px-3 py-2 rounded-xl transition
-                                    ${isActive ? `${currentTheme.tagBg} font-semibold` : "hover:brightness-110"}
-                                `}
+    flex items-center gap-3 px-3 py-2 rounded-xl
+    transform transition-transform duration-200 will-change-transform
+    motion-reduce:transform-none motion-reduce:transition-none
+    ${isActive ? `${currentTheme.tagBg} font-semibold translate-x-2` : "hover:brightness-110 hover:translate-x-2"}
+  `}
                             >
-                                <div className={`w-2 h-6 rounded-full bg-gradient-to-b ${gradient}`}></div>
-                                <span>{cat}</span>
+                                <div className={`w-2 h-6 rounded-full bg-gradient-to-b ${gradient} transition-transform duration-200`}></div>
+                                <span className="transition-colors duration-200">{cat}</span>
                             </Link>
+
+
                         </li>
                     );
                 })}

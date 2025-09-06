@@ -37,9 +37,6 @@ export default function Card({ title, content, category = "default", tags = [], 
                     ))}
                 </div>
             )}
-
-            {/* Overlay hover */}
-            <div className="absolute inset-0 rounded-2xl pointer-events-none bg-gradient-to-br from-white via-transparent to-white opacity-0 hover:opacity-10 transition dark:from-gray-700 dark:via-transparent dark:to-gray-700"></div>
         </div>
     );
 }
