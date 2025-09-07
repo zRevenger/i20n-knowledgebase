@@ -1,5 +1,4 @@
-﻿import { Link } from "react-router-dom";
-import knowledgeData from "../data/knowledge.json";
+﻿import knowledgeData from "../data/knowledge.json";
 import Card from "../components/Card";
 import { useState, useEffect } from "react";
 import SearchBar from "../components/SearchBar.jsx";
@@ -51,13 +50,12 @@ export default function CategoriesPage() {
             <CardGrid
                 items={filteredCategories}
                 renderItem={(category) => (
-                    <Link key={category}  to={`/categorie/${category}`}>
-                        <Card
-                            title={category}
-                            content={`Visualizza tutti gli articoli della categoria ${category}.`}
-                            category={category}
-                        />
-                    </Link>
+                    <Card
+                        title={category}
+                        content={`Visualizza tutti gli articoli della categoria ${category}.`}
+                        category={category}
+                        to={`/categorie/${category}`}
+                    />
                 )}
                 emptyMessage="Nessun articolo trovato in questa categoria."
             />

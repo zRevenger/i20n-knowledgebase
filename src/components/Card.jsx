@@ -1,12 +1,14 @@
 ﻿import { categoryGradients } from "../utils/theme";
 import {useSettings} from "../contexts/SettingsContext.jsx";
+import {Link} from "react-router-dom";
 
-export default function Card({ title, content, category = "default", tags = [] }) {
+export default function Card({ title, content, category = "default", tags = [], to}) {
     const gradient = categoryGradients[category.toLowerCase()] || categoryGradients.default;
 
     const { currentTheme } = useSettings();
 
     return (
+        <Link to={to}>
         <div
             className={`
     relative p-6 rounded-2xl min-h-[240px] flex flex-col border
@@ -42,5 +44,6 @@ export default function Card({ title, content, category = "default", tags = [] }
                 </div>
             )}
         </div>
+        </Link>
     );
 }

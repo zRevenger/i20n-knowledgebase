@@ -11,6 +11,7 @@ export default function ArticleCard({ article }) {
             category={article.categoria}
             tags={article.tags}
             currentTheme={currentTheme}
+            to={`/articolo/${article.id}`}
         />
     );
 }
