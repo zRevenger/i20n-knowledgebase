@@ -19,15 +19,25 @@ export default function Header({ theme, setTheme, currentTheme }) {
 
                 {/* Navigazione */}
                 <nav className="flex items-center gap-6">
-                    <Link to="/" className={`hover:underline ${currentTheme.headerText}`}>
-                        Home
-                    </Link>
-                    <Link to="/esplora" className={`hover:underline ${currentTheme.headerText}`}>
-                        Esplora
-                    </Link>
-                    <Link to="/categorie" className={`hover:underline ${currentTheme.headerText}`}>
-                        Categorie
-                    </Link>
+                    {[
+                        { to: "/", label: "Home" },
+                        { to: "/esplora", label: "Esplora" },
+                        { to: "/categorie", label: "Categorie" }
+                    ].map(({ to, label }) => (
+                        <Link
+                            key={to}
+                            to={to}
+                            className={`
+        relative ${currentTheme.headerText} transition-all duration-300
+        hover:scale-110 hover:${currentTheme.headerText}
+        after:content-[''] after:absolute after:left-0 after:-bottom-1
+        after:w-0 after:h-[2px] after:${currentTheme.headerLinkUnderline}
+        after:transition-all after:duration-300 hover:after:w-full
+      `}
+                        >
+                            {label}
+                        </Link>
+                    ))}
                 </nav>
 
                 {/* Toggle tema */}
