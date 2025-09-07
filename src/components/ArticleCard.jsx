@@ -7,7 +7,7 @@ export default function ArticleCard({ article }) {
     return (
         <Card
             title={article.titolo}
-            content={article.contenuto}
+            content={article.sottotitolo}
             category={article.categoria}
             tags={article.tags}
             currentTheme={currentTheme}

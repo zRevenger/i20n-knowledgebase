@@ -17,6 +17,9 @@
 
         buttonBg: "bg-gray-100 hover:bg-gray-200",
         buttonText: "text-gray-900",
+
+        quoteBg: "bg-gray-100/40",
+        quoteText: "text-gray-600",
     },
 
     dark: {
@@ -37,6 +40,9 @@
 
         buttonBg: "bg-gray-800 hover:bg-gray-700",
         buttonText: "text-gray-100",
+
+        quoteBg: "bg-gray-900/25",
+        quoteText: "text-gray-300",
     },
 };
 
