@@ -4,10 +4,11 @@ import knowledgeData from "../data/knowledge.json";
 import Sidebar from "../components/Sidebar.jsx";
 import SearchBar from "../components/Searchbar.jsx";
 import CardGrid from "../components/CardGrid.jsx";
+import {useSettings} from "../contexts/SettingsContext.jsx";
 
-export default function KnowledgeBase({ currentTheme }) {
+export default function KnowledgeBase() {
     const [search, setSearch] = useState("");
-    const [sortOption, setSortOption] = useState(null);
+    const { sortOption, setSortOption } = useSettings();
     const [filteredArticles, setFilteredArticles] = useState(knowledgeData);
 
     // ricerca avanzata: titolo, contenuto, tags
@@ -48,13 +49,12 @@ export default function KnowledgeBase({ currentTheme }) {
     return (
         <div className="max-w-6xl mx-auto mt-8 px-6 flex flex-col gap-6">
 
-            <Sidebar currentTheme={currentTheme} setSearch={setSearch} />
+            <Sidebar setSearch={setSearch} />
 
             {/* Search bar */}
             <SearchBar
                 search={search}
                 setSearch={setSearch}
-                currentTheme={currentTheme}
                 placeholder="Cerca articoli, tag o contenuto..."
                 onSort={setSortOption}
             />
@@ -64,7 +64,7 @@ export default function KnowledgeBase({ currentTheme }) {
                 items={filteredArticles}
                 emptyMessage="Nessun articolo trovato."
                 renderItem={(article) => (
-                    <ArticleCard article={article} currentTheme={currentTheme} />
+                    <ArticleCard article={article} />
                 )}
             />
         </div>

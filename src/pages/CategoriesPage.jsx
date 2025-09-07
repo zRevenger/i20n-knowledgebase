@@ -4,10 +4,11 @@ import Card from "../components/Card";
 import { useState, useEffect } from "react";
 import SearchBar from "../components/SearchBar.jsx";
 import CardGrid from "../components/CardGrid.jsx";
+import {useSettings} from "../contexts/SettingsContext.jsx";
 
-export default function CategoriesPage({ currentTheme }) {
+export default function CategoriesPage() {
     const [search, setSearch] = useState("");
-    const [sortOption, setSortOption] = useState(null);
+    const { sortOption, setSortOption } = useSettings();
     const [filteredCategories, setFilteredCategories] = useState([]);
 
     // Lista categorie uniche
@@ -42,7 +43,6 @@ export default function CategoriesPage({ currentTheme }) {
             <SearchBar
                 search={search}
                 setSearch={setSearch}
-                currentTheme={currentTheme}
                 placeholder={`Cerca categorie...`}
                 onSort={setSortOption}
             />
@@ -56,7 +56,6 @@ export default function CategoriesPage({ currentTheme }) {
                             title={category}
                             content={`Visualizza tutti gli articoli della categoria ${category}.`}
                             category={category}
-                            currentTheme={currentTheme}
                         />
                     </Link>
                 )}

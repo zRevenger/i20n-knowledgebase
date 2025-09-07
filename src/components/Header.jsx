@@ -1,8 +1,10 @@
 ﻿import { Link } from "react-router-dom";
 import nLogo from "../assets/n-logo.svg";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
+import {useSettings} from "../contexts/SettingsContext.jsx";
 
-export default function Header({ theme, setTheme, currentTheme }) {
+export default function Header() {
+    const { theme, setTheme, currentTheme } = useSettings();
     return (
         <header className={`fixed top-0 left-0 w-full ${currentTheme.headerBg} backdrop-blur-md border-b ${currentTheme.headerBorder} shadow-sm z-50`}>
             <div className="max-w-6xl mx-auto flex items-center px-6 py-3">

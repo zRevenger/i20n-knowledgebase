@@ -1,9 +1,10 @@
 ﻿import { useState } from "react";
 import { BarsArrowUpIcon } from "@heroicons/react/24/solid";
+import {useSettings} from "../contexts/SettingsContext.jsx";
 
-export default function SearchBar ({ search, setSearch, currentTheme, placeholder, onSort }) {
+export default function SearchBar ({ search, setSearch, placeholder, onSort }) {
     const [sortOpen, setSortOpen] = useState(false);
-    const [sortOption, setSortOption] = useState(null);
+    const { sortOption, setSortOption } = useSettings();
 
     const handleSort = (option) => {
         const newOption = option === sortOption ? null : option; // toggle
@@ -11,6 +12,8 @@ export default function SearchBar ({ search, setSearch, currentTheme, placeholde
         setSortOpen(false);
         onSort && onSort(newOption);
     };
+
+    const { currentTheme } = useSettings();
 
     return (
         <div className="w-full flex justify-center relative">

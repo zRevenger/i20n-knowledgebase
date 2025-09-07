@@ -1,4 +1,8 @@
-﻿export default function Footer({ currentTheme }) {
+﻿import {useSettings} from "../contexts/SettingsContext.jsx";
+
+export default function Footer() {
+    const { currentTheme } = useSettings();
+
     return (
         <footer
             className={`

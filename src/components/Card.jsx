@@ -1,7 +1,10 @@
 ﻿import { categoryGradients } from "../utils/theme";
+import {useSettings} from "../contexts/SettingsContext.jsx";
 
-export default function Card({ title, content, category = "default", tags = [], currentTheme }) {
+export default function Card({ title, content, category = "default", tags = [] }) {
     const gradient = categoryGradients[category.toLowerCase()] || categoryGradients.default;
+
+    const { currentTheme } = useSettings();
 
     return (
         <div

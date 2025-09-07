@@ -6,11 +6,12 @@ import ArticleCard from "../components/ArticleCard";
 import Sidebar from "../components/Sidebar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import CardGrid from "../components/CardGrid.jsx";
+import {useSettings} from "../contexts/SettingsContext.jsx";
 
-export default function CategoryPage({ currentTheme }) {
+export default function CategoryPage() {
     const { categoryName } = useParams();
     const [search, setSearch] = useState("");
-    const [sortOption, setSortOption] = useState(null);
+    const { sortOption, setSortOption } = useSettings();
     const [filteredArticles, setFilteredArticles] = useState([]);
 
     // Filtra articoli della categoria selezionata
@@ -57,13 +58,12 @@ export default function CategoryPage({ currentTheme }) {
             <h2 className="text-2xl font-bold text-center mb-4">
                 Categoria: {categoryName}
             </h2>
-            <Sidebar currentTheme={currentTheme} setSearch={setSearch} />
+            <Sidebar setSearch={setSearch} />
             {/* Search bar */}
             <SearchBar
                 search={search}
                 setSearch={setSearch}
                 onSort={setSortOption}
-                currentTheme={currentTheme}
                 placeholder={`Cerca nella categoria ${categoryName}...`}
             />
 
@@ -71,7 +71,7 @@ export default function CategoryPage({ currentTheme }) {
             <CardGrid
                 items={filteredArticles}
                 renderItem={(article) => (
-                    <ArticleCard article={article} currentTheme={currentTheme} />
+                    <ArticleCard article={article}   />
                 )}
                 emptyMessage="Nessun articolo trovato in questa categoria."
             />

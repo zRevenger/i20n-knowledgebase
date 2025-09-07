@@ -1,8 +1,10 @@
 ﻿import { Link } from "react-router-dom";
 import heroBg from "../assets/hero-bg.jpg";
 import {categoryGradients} from "../utils/theme.js";
+import {useSettings} from "../contexts/SettingsContext.jsx";
 
-export default function Homepage({ currentTheme }) {
+export default function Homepage() {
+    const { currentTheme } = useSettings();
     return (
         <div className="flex flex-col min-h-screen  -mx-6 -mt-50">
             {/* Hero Section */}

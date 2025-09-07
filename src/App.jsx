@@ -1,16 +1,14 @@
-import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import KnowledgeBase from "./pages/KnowledgeBase";
 import CategoriesPage from "./pages/CategoriesPage";
 import CategoryPage from "./pages/CategoryPage";
 import Footer from "./components/Footer";
-import { themes } from "./utils/theme.js";
 import Homepage from "./pages/Homepage.jsx";
+import { useSettings } from "./contexts/SettingsContext";
 
 export default function App() {
-    const [theme, setTheme] = useState("light");
-    const currentTheme = themes[theme];
+    const { currentTheme } = useSettings();
 
     return (
         <div
@@ -18,20 +16,20 @@ export default function App() {
             style={{ scrollbarGutter: "stable both-edges" }}
         >
             {/* Header con toggle tema */}
-            <Header theme={theme} setTheme={setTheme} currentTheme={currentTheme} />
+            <Header/>
 
             {/* Main content */}
             <main className="flex-1 pt-20">
                 <Routes>
-                    <Route path="/" element={<Homepage currentTheme={currentTheme} />} />
-                    <Route path="/esplora" element={<KnowledgeBase currentTheme={currentTheme} />} />
-                    <Route path="/categorie" element={<CategoriesPage currentTheme={currentTheme} />} />
-                    <Route path="/categorie/:categoryName" element={<CategoryPage currentTheme={currentTheme} />} />
+                    <Route path="/" element={<Homepage />} />
+                    <Route path="/esplora" element={<KnowledgeBase />} />
+                    <Route path="/categorie" element={<CategoriesPage />} />
+                    <Route path="/categorie/:categoryName" element={<CategoryPage />} />
                 </Routes>
             </main>
 
             {/* Footer comune */}
-            <Footer currentTheme={currentTheme} />
+            <Footer />
         </div>
     );
 }

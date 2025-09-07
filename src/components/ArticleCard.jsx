@@ -1,6 +1,9 @@
 ﻿import Card from "./Card";
+import {useSettings} from "../contexts/SettingsContext.jsx";
 
-export default function ArticleCard({ article, currentTheme }) {
+export default function ArticleCard({ article }) {
+    const { currentTheme } = useSettings();
+
     return (
         <Card
             title={article.titolo}

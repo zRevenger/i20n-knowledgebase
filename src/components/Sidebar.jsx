@@ -1,10 +1,13 @@
 ﻿import { Link, useLocation } from "react-router-dom";
 import knowledgeData from "../data/knowledge.json";
 import { categoryGradients } from "../utils/theme";
+import {useSettings} from "../contexts/SettingsContext.jsx";
 
-export default function Sidebar({ currentTheme }) {
+export default function Sidebar() {
     const location = useLocation();
     const categories = [...new Set(knowledgeData.map(a => a.categoria))];
+
+    const { currentTheme } = useSettings();
 
     return (
         <aside
