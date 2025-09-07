@@ -6,7 +6,7 @@
         headerBg: "bg-gray-50/70", // header chiaro ma separato
         headerBorder: "border-gray-200",
         headerText: "text-gray-900",
-        headerLinkUnderline: "bg-gray-900",
+        headerLinkUnderline: "after:bg-gray-900",
 
         cardBg: "bg-white shadow-md", // card più “material style”
         cardBorder: "border-gray-200",
@@ -26,7 +26,7 @@
         headerBg: "bg-gray-800/70",
         headerBorder: "border-gray-700",
         headerText: "text-gray-100",
-        headerLinkUnderline: "bg-gray-100",
+        headerLinkUnderline: "after:bg-gray-100",
 
         cardBg: "bg-gray-800 shadow-gray-700/65 shadow-sm", // più spessore con ombra
         cardBorder: "border-gray-700",

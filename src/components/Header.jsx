@@ -31,7 +31,7 @@ export default function Header({ theme, setTheme, currentTheme }) {
         relative ${currentTheme.headerText} transition-all duration-300
         hover:scale-110 hover:${currentTheme.headerText}
         after:content-[''] after:absolute after:left-0 after:-bottom-1
-        after:w-0 after:h-[2px] after:${currentTheme.headerLinkUnderline}
+        after:w-0 after:h-[2px] ${currentTheme.headerLinkUnderline} 
         after:transition-all after:duration-300 hover:after:w-full
       `}
                         >
