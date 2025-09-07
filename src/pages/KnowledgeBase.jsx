@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useState, useEffect } from "react";
 import ArticleCard from "../components/ArticleCard";
 import knowledgeData from "../data/knowledge.json";
 import Sidebar from "../components/Sidebar.jsx";
@@ -7,17 +7,43 @@ import CardGrid from "../components/CardGrid.jsx";
 
 export default function KnowledgeBase({ currentTheme }) {
     const [search, setSearch] = useState("");
-    const articlesData = knowledgeData;
+    const [sortOption, setSortOption] = useState(null);
+    const [filteredArticles, setFilteredArticles] = useState(knowledgeData);
 
     // ricerca avanzata: titolo, contenuto, tags
-    const filteredArticles = articlesData.filter((article) => {
-        const searchLower = search.toLowerCase();
-        return (
-            article.titolo.toLowerCase().includes(searchLower) ||
-            article.contenuto.toLowerCase().includes(searchLower) ||
-            article.tags.some(tag => tag.toLowerCase().includes(searchLower))
-        );
-    });
+    useEffect(() => {
+        // Filtra articoli per titolo, contenuto e tags
+        let results = knowledgeData.filter((article) => {
+            const searchLower = search.toLowerCase();
+            return (
+                article.titolo.toLowerCase().includes(searchLower) ||
+                article.contenuto.toLowerCase().includes(searchLower) ||
+                article.tags.some((tag) => tag.toLowerCase().includes(searchLower))
+            );
+        });
+
+        // Applica sorting
+        if (sortOption) {
+            switch (sortOption) {
+                case "title-asc":
+                    results.sort((a, b) => a.titolo.localeCompare(b.titolo));
+                    break;
+                case "title-desc":
+                    results.sort((a, b) => b.titolo.localeCompare(a.titolo));
+                    break;
+                case "category-asc":
+                    results.sort((a, b) => a.categoria.localeCompare(b.categoria));
+                    break;
+                case "category-desc":
+                    results.sort((a, b) => b.categoria.localeCompare(a.categoria));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        setFilteredArticles(results);
+    }, [search, sortOption]);
 
     return (
         <div className="max-w-6xl mx-auto mt-8 px-6 flex flex-col gap-6">
@@ -30,6 +56,7 @@ export default function KnowledgeBase({ currentTheme }) {
                 setSearch={setSearch}
                 currentTheme={currentTheme}
                 placeholder="Cerca articoli, tag o contenuto..."
+                onSort={setSortOption}
             />
 
             {/* Griglia articoli */}
