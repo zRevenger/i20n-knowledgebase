@@ -7,6 +7,7 @@ import Sidebar from "../components/Sidebar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import CardGrid from "../components/CardGrid.jsx";
 import {useSettings} from "../contexts/SettingsContext.jsx";
+import { FetchMD } from "../utils/FetchMD.jsx";
 
 export default function CategoryPage() {
     const { categoryName } = useParams();
@@ -19,38 +20,55 @@ export default function CategoryPage() {
         (article) => article.categoria.toLowerCase() === categoryName.toLowerCase()
     );
 
-    // Filtra e ordina articoli in base a search e sort
+    // ricerca avanzata: titolo, contenuto, tags
     useEffect(() => {
-        let results = categoryArticles.filter((article) => {
-            const searchLower = search.toLowerCase();
-            return (
-                article.titolo.toLowerCase().includes(searchLower) ||
-                article.contenuto.toLowerCase().includes(searchLower) ||
-                article.tags.some((tag) => tag.toLowerCase().includes(searchLower))
+        const searchLower = search.toLowerCase();
+
+        // fetch di tutti i contenuti in parallelo
+        Promise.all(
+            categoryArticles.map((article) =>
+                FetchMD(article.id)
+                    .then((text) => ({
+                        ...article,
+                        _content: text.toLowerCase(), // salvo in un campo temporaneo
+                    }))
+                    .catch(() => ({
+                        ...article,
+                        _content: "", // se fallisce, contenuto vuoto
+                    }))
+            )
+        ).then((articlesWithContent) => {
+            // 🔎 filtro per titolo, contenuto e tags
+            let results = articlesWithContent.filter(
+                (article) =>
+                    article.titolo.toLowerCase().includes(searchLower) ||
+                    article._content.includes(searchLower) ||
+                    article.tags.some((tag) => tag.toLowerCase().includes(searchLower))
             );
-        });
 
-        if (sortOption) {
-            switch (sortOption) {
-                case "title-asc":
-                    results.sort((a, b) => a.titolo.localeCompare(b.titolo));
-                    break;
-                case "title-desc":
-                    results.sort((a, b) => b.titolo.localeCompare(a.titolo));
-                    break;
-                case "category-asc":
-                    results.sort((a, b) => a.categoria.localeCompare(b.categoria));
-                    break;
-                case "category-desc":
-                    results.sort((a, b) => b.categoria.localeCompare(a.categoria));
-                    break;
-                default:
-                    break;
+            // ↕️ sorting
+            if (sortOption) {
+                switch (sortOption) {
+                    case "title-asc":
+                        results.sort((a, b) => a.titolo.localeCompare(b.titolo));
+                        break;
+                    case "title-desc":
+                        results.sort((a, b) => b.titolo.localeCompare(a.titolo));
+                        break;
+                    case "category-asc":
+                        results.sort((a, b) => a.categoria.localeCompare(b.categoria));
+                        break;
+                    case "category-desc":
+                        results.sort((a, b) => b.categoria.localeCompare(a.categoria));
+                        break;
+                    default:
+                        break;
+                }
             }
-        }
 
-        setFilteredArticles(results);
-    }, [search, sortOption, categoryName]);
+            setFilteredArticles(results);
+        });
+    }, [categoryArticles, search, sortOption]);
 
     return (
         <div className="max-w-6xl mx-auto mt-8 px-6 flex flex-col gap-6">

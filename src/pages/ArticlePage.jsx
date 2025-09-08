@@ -3,6 +3,7 @@ import knowledgeData from "../data/knowledge.json";
 import { categoryGradients } from "../utils/theme.js";
 import ReactMarkdown from "react-markdown";
 import { useSettings } from "../contexts/SettingsContext.jsx";
+import { FetchMD } from "../utils/FetchMD.jsx";
 import {useEffect, useState} from "react";
 
 export default function ArticlePage() {
@@ -14,18 +15,10 @@ export default function ArticlePage() {
     const [content, setContent] = useState("");
 
     useEffect(() => {
-        if (article?.id) {
-            // URL relativo alla root pubblica
-            const url = `/i20n-knowledgebase/articles/${article.id}.md`;
-            fetch(url)
-                .then(res => {
-                    if (!res.ok) throw new Error("File Markdown non trovato");
-                    return res.text();
-                })
-                .then(md => setContent(md))
-                .catch(err => console.error(err));
-        }
-    }, [article]);
+        FetchMD(article.id)
+            .then((md) => setContent(md))
+            .catch((err) => console.error("Errore:", err));
+    }, [content, article]);
 
     if (!article) return(
         <article className="max-w-3xl mx-auto mt-12 px-6">

@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar.jsx";
 import SearchBar from "../components/Searchbar.jsx";
 import CardGrid from "../components/CardGrid.jsx";
 import {useSettings} from "../contexts/SettingsContext.jsx";
+import { FetchMD } from "../utils/FetchMD.jsx";
 
 export default function KnowledgeBase() {
     const [search, setSearch] = useState("");
@@ -13,37 +14,53 @@ export default function KnowledgeBase() {
 
     // ricerca avanzata: titolo, contenuto, tags
     useEffect(() => {
-        // Filtra articoli per titolo, contenuto e tags
-        let results = knowledgeData.filter((article) => {
-            const searchLower = search.toLowerCase();
-            return (
-                article.titolo.toLowerCase().includes(searchLower) ||
-                article.contenuto.toLowerCase().includes(searchLower) ||
-                article.tags.some((tag) => tag.toLowerCase().includes(searchLower))
+        const searchLower = search.toLowerCase();
+
+        // fetch di tutti i contenuti in parallelo
+        Promise.all(
+            knowledgeData.map((article) =>
+                FetchMD(article.id)
+                    .then((text) => ({
+                        ...article,
+                        _content: text.toLowerCase(), // salvo in un campo temporaneo
+                    }))
+                    .catch(() => ({
+                        ...article,
+                        _content: "", // se fallisce, contenuto vuoto
+                    }))
+            )
+        ).then((articlesWithContent) => {
+            // 🔎 filtro per titolo, contenuto e tags
+            let results = articlesWithContent.filter(
+                (article) =>
+                    article.titolo.toLowerCase().includes(searchLower) ||
+                    article._content.includes(searchLower) ||
+                    article.tags.some((tag) => tag.toLowerCase().includes(searchLower)) ||
+                    article.categoria.toLowerCase().includes(searchLower)
             );
-        });
 
-        // Applica sorting
-        if (sortOption) {
-            switch (sortOption) {
-                case "title-asc":
-                    results.sort((a, b) => a.titolo.localeCompare(b.titolo));
-                    break;
-                case "title-desc":
-                    results.sort((a, b) => b.titolo.localeCompare(a.titolo));
-                    break;
-                case "category-asc":
-                    results.sort((a, b) => a.categoria.localeCompare(b.categoria));
-                    break;
-                case "category-desc":
-                    results.sort((a, b) => b.categoria.localeCompare(a.categoria));
-                    break;
-                default:
-                    break;
+            // ↕️ sorting
+            if (sortOption) {
+                switch (sortOption) {
+                    case "title-asc":
+                        results.sort((a, b) => a.titolo.localeCompare(b.titolo));
+                        break;
+                    case "title-desc":
+                        results.sort((a, b) => b.titolo.localeCompare(a.titolo));
+                        break;
+                    case "category-asc":
+                        results.sort((a, b) => a.categoria.localeCompare(b.categoria));
+                        break;
+                    case "category-desc":
+                        results.sort((a, b) => b.categoria.localeCompare(a.categoria));
+                        break;
+                    default:
+                        break;
+                }
             }
-        }
 
-        setFilteredArticles(results);
+            setFilteredArticles(results);
+        });
     }, [search, sortOption]);
 
     return (
