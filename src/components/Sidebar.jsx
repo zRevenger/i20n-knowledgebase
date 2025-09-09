@@ -12,9 +12,9 @@ export default function Sidebar() {
     return (
         <aside
             className={`
-                w-64 p-4 rounded-2xl shadow-md border
+                hidden sm:block w-[14%] 2xl:max-w-3xs p-4 rounded-2xl shadow-md border
                 ${currentTheme.cardBg} ${currentTheme.cardBorder} ${currentTheme.cardText}
-                fixed top-80 left-18
+                fixed top-[35%] left-[3.75%]
                 max-h-[calc(100vh-96px)] overflow-y-auto
             `}
         >

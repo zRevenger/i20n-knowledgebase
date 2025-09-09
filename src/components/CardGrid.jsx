@@ -2,7 +2,7 @@
 
 export default function CardGrid ({ items, renderItem, emptyMessage }) {
     return (
-        <motion.div layout className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div layout className="relative grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-6">
             <AnimatePresence mode="popLayout">
                 {items && items.length > 0 ? (
                     items.map((item,index) => {

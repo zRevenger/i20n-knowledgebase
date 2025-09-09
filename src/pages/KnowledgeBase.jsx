@@ -64,7 +64,7 @@ export default function KnowledgeBase() {
     }, [search, sortOption]);
 
     return (
-        <div className="max-w-6xl mx-auto mt-8 px-6 flex flex-col gap-6">
+        <div className="max-w-sm sm:max-w-6/10 mx-auto mt-20 sm:mt-8 px-6 flex flex-col gap-6">
 
             <Sidebar setSearch={setSearch} />
 
