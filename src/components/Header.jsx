@@ -65,8 +65,8 @@ export default function Header() {
                     className="relative flex ml-2 md:hidden p-2 rounded-md items-center justify-center transition-all duration-500 hover:scale-125 active:scale-110 ease-in-out group"
                     onClick={() => setMenuOpen(!menuOpen)}
                 >
-                    <XMarkIcon className={`absolute w-7 h-7 text-gray-800 dark:text-gray-200 transition-all duration-500 transform rotate-0 ${menuOpen ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 -rotate-45"}`}/>
-                    <Bars3Icon className={`w-7 h-7 text-gray-800 dark:text-gray-200 transition-all duration-500 transform rotate-0 ${!menuOpen ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 -rotate-45"}`}/>
+                    <XMarkIcon className={`absolute w-7 h-7 ${currentTheme.headerText} transition-all duration-500 transform rotate-0 ${menuOpen ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 -rotate-45"}`}/>
+                    <Bars3Icon className={`w-7 h-7 ${currentTheme.headerText} transition-all duration-500 transform rotate-0 ${!menuOpen ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 -rotate-45"}`}/>
                 </button>
             </div>
 
