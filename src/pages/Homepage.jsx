@@ -6,7 +6,7 @@ import {useSettings} from "../contexts/SettingsContext.jsx";
 export default function Homepage() {
     const { currentTheme } = useSettings();
     return (
-        <div className="flex flex-col min-h-screen  -mx-6 -mt-50">
+        <div className="flex flex-col min-h-screen max-w-screen -mt-50">
             {/* Hero Section */}
             <section
                 className="relative h-screen w-full flex items-center justify-center text-center"
@@ -20,16 +20,16 @@ export default function Homepage() {
                 <div className="absolute inset-0 bg-black/80"></div>
 
                 {/* Contenuto hero */}
-                <div className="relative z-10 max-w-3xl mx-auto px-6">
-                    <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">
+                <div className="relative mt-20 max-h-full max-w-sm sm:max-w-3xl 3xl:max-w-6xl mx-auto px-6">
+                    <h1 className=" text-4xl sm:text-5xl 3xl:text-7xl font-extrabold text-white mb-4">
                         Benvenuto nella <br/> Knowledge Base i20N
                     </h1>
-                    <p className="text-lg sm:text-xl text-gray-200 mb-6">
+                    <p className="text-lg sm:text-xl 3xl:text-3xl text-gray-200 mb-6">
                         Scopri articoli, guide e molto altro dedicato alla tua Hyundai i20N.
                     </p>
 
                     {/* Pulsanti CTA */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <div className="flex flex-col sm:flex-row gap-4 max-w-3xs sm:max-w-xl mx-auto justify-center">
                         <Link
                             to="/esplora"
                             className="px-6 py-3 rounded-full font-semibold bg-red-600 text-white hover:bg-red-700 hover:scale-105 hover:shadow-lg transition-all duration-300 ease-in-out"
@@ -48,7 +48,7 @@ export default function Homepage() {
 
             {/* Sezione contenuti introduttivi */}
 
-            <section className="py-12">
+            <section className="py-12 px-6">
                 <h2 className={`max-w-4xl mx-auto px-6 text-center text-2xl sm:text-3xl font-bold mb-6 ${currentTheme.text}`}>
                     Trova subito quello che cerchi
                 </h2>

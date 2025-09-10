@@ -14,7 +14,7 @@ export default function App() {
     return (
         <div
             className={`min-h-screen flex flex-col overflow-y-auto ${currentTheme.bg} ${currentTheme.text} transition-colors duration-500`}
-            style={{ scrollbarGutter: "stable both-edges" }}
+
         >
             {/* Header con toggle tema */}
             <Header/>

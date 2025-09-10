@@ -16,6 +16,8 @@ html {
 }
 
 @theme {
+    --breakpoint-3xl: 150rem;
+
     /* Grigi chiari */
     --color-gray-50: oklch(0.98 0 0);
     --color-gray-100: oklch(0.94 0 0);

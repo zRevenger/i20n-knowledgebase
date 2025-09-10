@@ -49,7 +49,7 @@ export default function ArticlePage() {
     const gradient = categoryGradients[article.categoria.toLowerCase()] || "from-gray-400 to-gray-600";
 
     return (
-        <article className="max-w-3xl mx-auto mt-12 px-6">
+        <article className="max-w-3xl mx-auto mt-[20%] sm:mt-[2.5%] px-6">
             {/* Titolo + indicatore categoria */}
             <header className="mb-6">
 
@@ -116,7 +116,7 @@ export default function ArticlePage() {
 
             </div>
             {/* Pulsante torna agli articoli */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center py-16">
+            <div className="flex flex-col flex-row gap-4 justify-center py-16">
                 <Link
                     to="/esplora"
                     className="px-6 py-3 rounded-full font-semibold bg-red-600 text-white hover:bg-red-700 hover:scale-105 hover:shadow-lg transition-all duration-300 ease-in-out"

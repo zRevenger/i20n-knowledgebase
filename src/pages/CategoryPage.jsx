@@ -71,7 +71,7 @@ export default function CategoryPage() {
     }, [categoryArticles, search, sortOption]);
 
     return (
-        <div className="max-w-sm sm:max-w-6/10 mx-auto mt-20 sm:mt-8 px-6 flex flex-col gap-6">
+        <div className="max-w-sm sm:max-w-6/10 mx-auto mt-8 px-6 flex flex-col gap-6">
             {/* Titolo categoria */}
             <h2 className="text-2xl font-bold text-center mb-4">
                 Categoria: {categoryName}

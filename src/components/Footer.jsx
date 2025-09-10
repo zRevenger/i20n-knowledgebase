@@ -6,7 +6,7 @@ export default function Footer() {
     return (
         <footer
             className={`
-                mt-12 py-6 px-6 rounded-t-2xl shadow-inner border-t
+                mt-[11%] xl:mt-[3%] 2xl:mt-[2.6%] py-6 px-6 rounded-t-2xl shadow-inner border-t
                 ${currentTheme.cardBg} ${currentTheme.cardBorder} ${currentTheme.cardText}
                 text-center
             `}
