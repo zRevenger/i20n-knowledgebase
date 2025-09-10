@@ -49,7 +49,7 @@ export default function ArticlePage() {
     const gradient = categoryGradients[article.categoria.toLowerCase()] || "from-gray-400 to-gray-600";
 
     return (
-        <article className="max-w-3xl mx-auto mt-[20%] sm:mt-[2.5%] px-6">
+        <article className="max-w-3xl mx-auto mt-8 px-6">
             {/* Titolo + indicatore categoria */}
             <header className="mb-6">
 
