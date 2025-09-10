@@ -20,11 +20,13 @@ export default function Header() {
         <header className={`fixed top-0 left-0 w-full ${currentTheme.headerBg} backdrop-blur-md border-b ${currentTheme.headerBorder} shadow-sm z-50`}>
             <div className="max-w-6xl mx-auto flex items-center px-6 py-3">
                 {/* Logo + titolo */}
-                <div className="flex items-center gap-3">
-                    <img src={nLogo} alt="Hyundai N Logo" className="h-8 w-auto" />
-                    <h1 className={`hidden md:block text-xl font-bold ${currentTheme.headerText}`}>
-                        Hyundai i20N - Knowledge Base
-                    </h1>
+                <div >
+                    <Link to={"/"} className="flex items-center gap-3">
+                        <img src={nLogo} alt="Hyundai N Logo" className="h-8 w-auto" />
+                        <h1 className={`hidden md:block text-xl font-bold ${currentTheme.headerText}`}>
+                            Hyundai i20N - Knowledge Base
+                        </h1>
+                    </Link>
                 </div>
 
                 <div className="flex-1"></div>
