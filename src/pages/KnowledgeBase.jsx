@@ -1,16 +1,27 @@
 ﻿import { useState, useEffect } from "react";
 import ArticleCard from "../components/ArticleCard";
-import knowledgeData from "../data/knowledge.json";
 import Sidebar from "../components/Sidebar.jsx";
 import SearchBar from "../components/Searchbar.jsx";
 import CardGrid from "../components/CardGrid.jsx";
 import {useSettings} from "../contexts/SettingsContext.jsx";
 import { FetchMD } from "../utils/FetchMD.jsx";
+import {FetchKnowledgeData} from "../utils/FetchKnowledgeData.jsx";
 
 export default function KnowledgeBase() {
     const [search, setSearch] = useState("");
     const { sortOption, setSortOption } = useSettings();
-    const [filteredArticles, setFilteredArticles] = useState(knowledgeData);
+    const [filteredArticles, setFilteredArticles] = useState([]);
+    const [articles, setArticles] = useState([]);
+
+    // Carica i dati da GitHub
+    useEffect(() => {
+        FetchKnowledgeData()
+            .then((data) => {
+                setArticles(data);
+                setFilteredArticles(data);
+            })
+            .catch((err) => console.error("Errore fetching knowledge data:", err));
+    }, []);
 
     // ricerca avanzata: titolo, contenuto, tags
     useEffect(() => {
@@ -18,7 +29,7 @@ export default function KnowledgeBase() {
 
         // fetch di tutti i contenuti in parallelo
         Promise.all(
-            knowledgeData.map((article) =>
+            articles.map((article) =>
                 FetchMD(article.id)
                     .then((text) => ({
                         ...article,

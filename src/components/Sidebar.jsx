@@ -1,11 +1,23 @@
 ﻿import { Link, useLocation } from "react-router-dom";
-import knowledgeData from "../data/knowledge.json";
 import { categoryGradients } from "../utils/theme";
 import {useSettings} from "../contexts/SettingsContext.jsx";
+import {useEffect, useState} from "react";
+import {FetchKnowledgeData} from "../utils/FetchKnowledgeData.jsx";
 
 export default function Sidebar() {
     const location = useLocation();
-    const categories = [...new Set(knowledgeData.map(a => a.categoria))];
+    const [categories, setCategories] = useState([]);
+
+    // Carica tutti i dati da GitHub
+    useEffect(() => {
+        FetchKnowledgeData()
+            .then((data) => {
+                // filtra subito per categoria
+                const categories = Array.from(new Set(data.map(a => a.categoria)));
+                setCategories(categories);
+            })
+            .catch((err) => console.error("Errore fetching knowledge data:", err));
+    }, [categories]);
 
     const { currentTheme } = useSettings();
 

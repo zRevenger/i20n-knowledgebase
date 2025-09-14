@@ -1,17 +1,27 @@
-﻿import knowledgeData from "../data/knowledge.json";
-import Card from "../components/Card";
+﻿import Card from "../components/Card";
 import { useState, useEffect } from "react";
 import SearchBar from "../components/SearchBar.jsx";
 import CardGrid from "../components/CardGrid.jsx";
 import {useSettings} from "../contexts/SettingsContext.jsx";
+import {FetchKnowledgeData} from "../utils/FetchKnowledgeData.jsx";
 
 export default function CategoriesPage() {
     const [search, setSearch] = useState("");
     const { sortOption, setSortOption } = useSettings();
     const [filteredCategories, setFilteredCategories] = useState([]);
+    const [categories, setCategories] = useState([]);
 
-    // Lista categorie uniche
-    const categories = Array.from(new Set(knowledgeData.map(a => a.categoria)));
+    // Carica tutti i dati da GitHub
+    useEffect(() => {
+        FetchKnowledgeData()
+            .then((data) => {
+                // filtra subito per categoria
+                const categories = Array.from(new Set(data.map(a => a.categoria)));
+                setCategories(categories);
+                setFilteredCategories(categories);
+            })
+            .catch((err) => console.error("Errore fetching knowledge data:", err));
+    }, [categories]);
 
     // Filtraggio e sorting categorie
     useEffect(() => {

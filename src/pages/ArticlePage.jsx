@@ -1,20 +1,31 @@
 ﻿import { Link, useParams } from "react-router-dom";
-import knowledgeData from "../data/knowledge.json";
 import { categoryGradients } from "../utils/theme.js";
 import ReactMarkdown from "react-markdown";
 import { useSettings } from "../contexts/SettingsContext.jsx";
 import { FetchMD } from "../utils/FetchMD.jsx";
 import {useEffect, useState} from "react";
+import {FetchKnowledgeData} from "../utils/FetchKnowledgeData.jsx";
 
 export default function ArticlePage() {
     const { currentTheme } = useSettings();
 
     const { id } = useParams();
-    const article = knowledgeData.find(a => String(a.id) === id);
 
+    const [article, setArticle] = useState(null);
     const [content, setContent] = useState("");
 
+    // Carica l'articolo dai dati JSON
     useEffect(() => {
+        FetchKnowledgeData()
+            .then((data) => {
+                const found = data.find((a) => String(a.id) === id);
+                setArticle(found);
+            })
+            .catch((err) => console.error("Errore fetching knowledge data:", err));
+    }, [id]);
+
+    useEffect(() => {
+        if(!article) return;
         FetchMD(article.id)
             .then((md) => setContent(md))
             .catch((err) => console.error("Errore:", err));

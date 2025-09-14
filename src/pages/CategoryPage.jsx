@@ -1,24 +1,34 @@
 ﻿// src/pages/CategoryPage.jsx
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import knowledgeData from "../data/knowledge.json";
 import ArticleCard from "../components/ArticleCard";
 import Sidebar from "../components/Sidebar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import CardGrid from "../components/CardGrid.jsx";
 import {useSettings} from "../contexts/SettingsContext.jsx";
 import { FetchMD } from "../utils/FetchMD.jsx";
+import {FetchKnowledgeData} from "../utils/FetchKnowledgeData.jsx";
 
 export default function CategoryPage() {
     const { categoryName } = useParams();
     const [search, setSearch] = useState("");
     const { sortOption, setSortOption } = useSettings();
     const [filteredArticles, setFilteredArticles] = useState([]);
+    const [articles, setArticles] = useState([]);
 
-    // Filtra articoli della categoria selezionata
-    const categoryArticles = knowledgeData.filter(
-        (article) => article.categoria.toLowerCase() === categoryName.toLowerCase()
-    );
+    // Carica tutti i dati da GitHub
+    useEffect(() => {
+        FetchKnowledgeData()
+            .then((data) => {
+                // filtra subito per categoria
+                const categoryArticles = data.filter(
+                    (article) => article.categoria.toLowerCase() === categoryName.toLowerCase()
+                );
+                setArticles(categoryArticles);
+                setFilteredArticles(categoryArticles);
+            })
+            .catch((err) => console.error("Errore fetching knowledge data:", err));
+    }, [categoryName]);
 
     // ricerca avanzata: titolo, contenuto, tags
     useEffect(() => {
@@ -26,7 +36,7 @@ export default function CategoryPage() {
 
         // fetch di tutti i contenuti in parallelo
         Promise.all(
-            categoryArticles.map((article) =>
+            articles.map((article) =>
                 FetchMD(article.id)
                     .then((text) => ({
                         ...article,
@@ -68,7 +78,7 @@ export default function CategoryPage() {
 
             setFilteredArticles(results);
         });
-    }, [categoryArticles, search, sortOption]);
+    }, [articles, search, sortOption]);
 
     return (
         <div className="max-w-sm sm:max-w-6/10 mx-auto mt-8 px-6 flex flex-col gap-6">
