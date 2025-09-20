@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import Homepage from "./pages/Homepage.jsx";
 import ArticlePage from "./pages/ArticlePage.jsx";
 import { useSettings } from "./contexts/SettingsContext";
+import EditorExplorer from "./pages/EditorExplorer.jsx";
 
 export default function App() {
     const { currentTheme } = useSettings();
@@ -27,6 +28,7 @@ export default function App() {
                     <Route path="/categorie" element={<CategoriesPage />} />
                     <Route path="/categorie/:categoryName" element={<CategoryPage />} />
                     <Route path="/articolo/:id" element={<ArticlePage />} />
+                    <Route path="/editor" element={<EditorExplorer />} />
                 </Routes>
             </main>
 
