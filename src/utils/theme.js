@@ -20,6 +20,14 @@
 
         quoteBg: "bg-gray-100/40",
         quoteText: "text-gray-600",
+
+        editorBg: "bg-white",
+        editorText: "text-gray-800",
+        editorTabActive: "bg-white",
+        editorTabInactive: "bg-gray-200 text-gray-600 hover:bg-gray-300",
+        editorButton: "bg-red-600 text-white hover:bg-red-700",
+        editorButtonDelete: "bg-red-600 text-white hover:bg-red-700",
+        editorListItem: "bg-gray-200 hover:bg-gray-300"
     },
 
     dark: {
@@ -43,6 +51,14 @@
 
         quoteBg: "bg-gray-900/25",
         quoteText: "text-gray-300",
+
+        editorBg: "bg-gray-800",
+        editorText: "text-gray-200",
+        editorTabActive: "bg-gray-800 text-white",
+        editorTabInactive: "bg-gray-700 text-gray-300 hover:bg-gray-600",
+        editorButton: "bg-red-600 text-white hover:bg-red-700",
+        editorButtonDelete: "bg-red-700 hover:bg-red-600",
+        editorListItem: "bg-gray-700 hover:bg-gray-600"
     },
 };
 

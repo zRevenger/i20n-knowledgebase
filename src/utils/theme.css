@@ -15,6 +15,10 @@ html {
     scrollbar-width: none; /* nasconde in Firefox */
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
 @theme {
     --breakpoint-3xl: 150rem;
 

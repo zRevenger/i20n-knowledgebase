@@ -1,14 +1,41 @@
 ﻿import { useState, useEffect } from "react";
 import ArticleEditor from "../components/ArticleEditor.jsx";
 import { FetchKnowledgeData } from "../utils/FetchKnowledgeData.jsx";
+import {useSettings} from "../contexts/SettingsContext.jsx";
+import { TrashIcon } from "@heroicons/react/24/solid";
+import EditorImageGrid from "../components/EditorImageGrid.jsx";
+import ArticleContent from "../components/ArticleContent.jsx";
 
 export default function EditorExplorer() {
+    const { currentTheme } = useSettings();
+
     const [activeTab, setActiveTab] = useState("articles");
     const [articles, setArticles] = useState([]);
     const [images, setImages] = useState([]);
     const [selectedArticle, setSelectedArticle] = useState(null);
     const [articleContent, setArticleContent] = useState("");
     const [frontmatter, setFrontmatter] = useState({});
+    const [knowledge, setKnowledge] = useState([]);
+
+    // caricamenti iniziali
+    useEffect(() => {
+        FetchKnowledgeData()
+            .then((data) => {
+                setKnowledge(data);
+            })
+            .catch((err) => console.error("Errore fetching knowledge data:", err));
+
+        //Primo fetch articoli e immagini
+        fetch("https://i20n-knowledgebase-articles.vercel.app/api/listFiles?type=articles")
+            .then((res) => res.json())
+            .then((data) => setArticles(data))
+            .catch((err) => console.error(err));
+
+        fetch("https://i20n-knowledgebase-articles.vercel.app/api/listFiles?type=images")
+            .then((res) => res.json())
+            .then((data) => setImages(data))
+            .catch((err) => console.error(err));
+    }, []);
 
     // Fetch articoli
     useEffect(() => {
@@ -181,170 +208,167 @@ export default function EditorExplorer() {
     };
 
     return (
-        <div className="max-w-6xl mx-auto mt-8 px-6">
-            {/* Tabs */}
-            <div className="flex gap-4 border-b pb-2 mb-6">
-                <button
-                    className={`px-4 py-2 font-semibold ${
-                        activeTab === "articles"
-                            ? "border-b-2 border-red-500 text-red-600"
-                            : "text-gray-500"
-                    }`}
-                    onClick={() => {
-                        setActiveTab("articles");
-                        setSelectedArticle(null);
-                    }}
-                >
-                    📄 Articoli
-                </button>
-                <button
-                    className={`px-4 py-2 font-semibold ${
-                        activeTab === "images"
-                            ? "border-b-2 border-red-500 text-red-600"
-                            : "text-gray-500"
-                    }`}
-                    onClick={() => {
-                        setActiveTab("images");
-                        setSelectedArticle(null);
-                    }}
-                >
-                    🖼️ Immagini
-                </button>
+        <div className="max-w-7xl mx-auto mt-10 px-6">
+            {/* Tabs sopra la card */}
+            <div className="flex mb-0">
+                {[
+                    {key: "articles", label: "📄 Articoli"},
+                    {key: "images", label: "🖼️ Immagini"},
+                ].map((tab) => (
+                    <button
+                        key={tab.key}
+                        onClick={() => {
+                            setActiveTab(tab.key);
+                            setSelectedArticle(null);
+                        }}
+                        className={`px-4 py-2 rounded-t-xl font-medium transition 
+                          ${
+                            activeTab === tab.key
+                                ? currentTheme.editorTabActive
+                                : currentTheme.editorTabInactive
+                        }`}
+                    >
+                        {tab.label}
+                    </button>
+                ))}
             </div>
 
-            {/* Lista articoli */}
-            {activeTab === "articles" && !selectedArticle && (
-                <div>
-                    <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-xl font-bold">Lista Articoli</h2>
-                        <button
-                            onClick={createNewArticle}
-                            className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                        >
-                            ➕ Nuovo articolo
-                        </button>
-                    </div>
-
-                    {articles.length === 0 ? (
-                        <p className="text-gray-500">Nessun articolo trovato</p>
-                    ) : (
-                        <ul className="space-y-2">
-                            {articles.map((file) => (
-                                <li
-                                    key={file.path}
-                                    className="p-3 rounded-md border flex justify-between items-center"
+            {/* Container */}
+            <div
+                className={`${currentTheme.editorBg} ${currentTheme.editorText} shadow-lg rounded-2xl overflow-hidden rounded-tl-none`}
+            >
+                <div className="p-6">
+                    {/* Lista articoli */}
+                    {activeTab === "articles" && !selectedArticle && (
+                        <div>
+                            <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-xl font-bold">Lista Articoli</h2>
+                                <button
+                                    onClick={createNewArticle}
+                                    className={`px-4 py-2 ${currentTheme.editorButton} font-medium rounded-lg shadow transition`}
                                 >
-                                    <span
-                                        onClick={() => openArticle(file)}
-                                        className="cursor-pointer hover:underline"
-                                    >
-                                        {file.name}
-                                    </span>
-                                    <button
-                                        onClick={() => deleteArticle(file)}
-                                        className="text-red-600 hover:text-red-800"
-                                    >
-                                        🗑️ Elimina
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
-            )}
+                                    ➕ Nuovo articolo
+                                </button>
+                            </div>
 
-            {/* Editor articolo */}
-            {activeTab === "articles" && selectedArticle && (
-                <ArticleEditor
-                    frontmatter={frontmatter}
-                    setFrontmatter={setFrontmatter}
-                    content={articleContent}
-                    setContent={setArticleContent}
-                    article={selectedArticle}
-                />
-            )}
+                            {articles.length === 0 ? (
+                                <p className="italic opacity-70">Nessun articolo trovato</p>
+                            ) : (
+                                <ul className="space-y-3">
+                                    {articles.map((file) => {
+                                            const id = file.name.split(".")[0];
+                                            const meta = knowledge.find((a) => String(a.id) === String(id));
 
-            {/* Lista immagini */}
-            {activeTab === "images" && (
-                <div>
-                    <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-xl font-bold">Lista Immagini</h2>
-                        <label className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer">
-                            📤 Carica immagine
-                            <input
-                                type="file"
-                                accept="image/*"
-                                className="hidden"
-                                onChange={async (e) => {
-                                    const file = e.target.files[0];
-                                    if (!file) return;
-
-                                    const reader = new FileReader();
-                                    reader.onload = async () => {
-                                        const base64Content = reader.result.split(",")[1];
-
-                                        const res = await fetch(
-                                            "https://i20n-knowledgebase-articles.vercel.app/api/saveFile",
-                                            {
-                                                method: "POST",
-                                                headers: { "Content-Type": "application/json" },
-                                                body: JSON.stringify({
-                                                    message: `Caricata nuova immagine ${file.name} da editor web`,
-                                                    files: [
-                                                        {
-                                                            path: `images/${file.name}`,
-                                                            content: base64Content,
-                                                            encoding: "base64",
-                                                        },
-                                                    ],
-                                                }),
-                                            }
-                                        );
-
-                                        if (res.ok) {
-                                            alert("✅ Immagine caricata con successo!");
-                                            setImages((prev) => [
-                                                ...prev,
-                                                { name: file.name, path: `images/${file.name}` },
-                                            ]);
-                                        } else {
-                                            const err = await res.json();
-                                            alert("❌ Errore upload: " + JSON.stringify(err));
+                                            return (
+                                                <li
+                                                    key={file.path}
+                                                    onClick={() => openArticle(file)}
+                                                    className={`flex justify-between items-center p-4 border-l-4 ${currentTheme.editorAccentBorder} ${currentTheme.editorListItem} rounded-r-lg cursor-pointer transition`}
+                                                >
+                                                    <span
+                                                        className="font-medium">{id} - {meta?.titolo || "(senza titolo)"}</span>
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            deleteArticle(file);
+                                                        }}
+                                                        className={`px-1 py-1 text-sm font-medium rounded-md ${currentTheme.editorButtonDelete}`}
+                                                    >
+                                                        <TrashIcon className="w-5 h-5"/>
+                                                    </button>
+                                                </li>
+                                            );
                                         }
-                                    };
-                                    reader.readAsDataURL(file);
-                                }}
-                            />
-                        </label>
-                    </div>
+                                    )}
+                                </ul>
 
-                    {images.length === 0 ? (
-                        <p className="text-gray-500">Nessuna immagine trovata</p>
-                    ) : (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                            {images.map((file) => (
-                                <div
-                                    key={file.path}
-                                    className="flex flex-col items-center gap-2 p-2 rounded-md border"
+
+                            )}
+                        </div>
+                    )}
+
+                    {/* Editor articolo */}
+                    {activeTab === "articles" && selectedArticle && (
+                        <ArticleEditor
+                            frontmatter={frontmatter}
+                            setFrontmatter={setFrontmatter}
+                            content={articleContent}
+                            setContent={setArticleContent}
+                            article={selectedArticle}
+                            images={images}
+                        />
+                    )}
+
+                    {/* Lista immagini */}
+                    {activeTab === "images" && (
+                        <div>
+                            <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-xl font-bold">Lista Immagini</h2>
+                                <label
+                                    className={`px-4 py-2 ${currentTheme.editorButton} font-medium rounded-lg shadow cursor-pointer transition`}
                                 >
-                                    <img
-                                        src={`https://raw.githubusercontent.com/zRevenger/i20n-knowledgebase-articles/main/${file.path}`}
-                                        alt={file.name}
-                                        className="w-full h-32 object-cover rounded-md"
+                                    📤 Carica immagine
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={async (e) => {
+                                            const file = e.target.files[0];
+                                            if (!file) return;
+                                            const reader = new FileReader();
+                                            reader.onload = async () => {
+                                                const base64Content = reader.result.split(",")[1];
+                                                const res = await fetch(
+                                                    "https://i20n-knowledgebase-articles.vercel.app/api/saveFile",
+                                                    {
+                                                        method: "POST",
+                                                        headers: {"Content-Type": "application/json"},
+                                                        body: JSON.stringify({
+                                                            message: `Caricata nuova immagine ${file.name} da editor web`,
+                                                            files: [
+                                                                {
+                                                                    path: `images/${file.name}`,
+                                                                    content: base64Content,
+                                                                    encoding: "base64",
+                                                                },
+                                                            ],
+                                                        }),
+                                                    }
+                                                );
+                                                if (res.ok) {
+                                                    alert("✅ Immagine caricata con successo!");
+                                                    setImages((prev) => [
+                                                        ...prev,
+                                                        {
+                                                            name: file.name,
+                                                            path: `images/${file.name}`,
+                                                        },
+                                                    ]);
+                                                } else {
+                                                    const err = await res.json();
+                                                    alert(
+                                                        "❌ Errore upload: " + JSON.stringify(err)
+                                                    );
+                                                }
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }}
                                     />
-                                    <span className="text-xs truncate">{file.name}</span>
-                                    <button
-                                        onClick={() => deleteImage(file)}
-                                        className="text-red-600 hover:text-red-800 text-sm"
-                                    >
-                                        🗑️ Elimina
-                                    </button>
-                                </div>
-                            ))}
+                                </label>
+                            </div>
+
+                            <EditorImageGrid images={images} deleteImage={deleteImage}></EditorImageGrid>
+
                         </div>
                     )}
                 </div>
+            </div>
+            {activeTab === "articles" && selectedArticle && (
+                <div className={"max-w-3xl mx-auto px-6 mt-10"}><ArticleContent content={articleContent}/></div>
             )}
+
         </div>
+
+
     );
 }

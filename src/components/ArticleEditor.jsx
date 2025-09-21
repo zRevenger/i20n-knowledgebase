@@ -1,8 +1,16 @@
-﻿import { useState } from "react";
-import ArticleContent from "./ArticleContent.jsx";
+﻿import {useRef, useState} from "react";
+import {useSettings} from "../contexts/SettingsContext.jsx";
+import { CalendarIcon, ListBulletIcon, LinkIcon, ItalicIcon, BoldIcon, H1Icon, H2Icon, H3Icon } from "@heroicons/react/24/solid";
+import { CodeBracketSquareIcon } from "@heroicons/react/24/outline";
+import {themes} from "../utils/theme.js";
+import { ImQuotesLeft } from "react-icons/im";
+import MarkdownPhotoPicker from "./MarkdownPhotoPicker.jsx";
 
-export default function ArticleEditor({ frontmatter, setFrontmatter, content, setContent, article }) {
+export default function ArticleEditor({ frontmatter, setFrontmatter, content, setContent, article, images }) {
     const [saving, setSaving] = useState(false);
+    const {currentTheme} = useSettings();
+
+    const textareaRef = useRef(null);
 
     // Funzione per salvare l'articolo
     const saveArticle = async () => {
@@ -93,87 +101,222 @@ export default function ArticleEditor({ frontmatter, setFrontmatter, content, se
         setFrontmatter({ ...frontmatter, [field]: value });
     };
 
+    const isDark = currentTheme === themes.dark;
+
+    const scrollVars = {
+        "--scroll-thumb": isDark ? "rgba(255,255,255,0.12)" : "rgba(16,24,40,0.12)",
+        "--scroll-thumb-hover": isDark ? "rgba(255,255,255,0.18)" : "rgba(16,24,40,0.20)",
+        "--scroll-track": isDark ? "rgba(255,255,255,0.03)" : "rgba(16,24,40,0.04)",
+    };
+
+    const insertAtCursor = (before, after = "") => {
+        const ta = textareaRef.current;
+        if (!ta) {
+            // fallback: append
+            setContent((c) => c + before + after);
+            return;
+        }
+
+        const start = ta.selectionStart ?? 0;
+        const end = ta.selectionEnd ?? 0;
+        const selected = content.slice(start, end);
+
+        const newText = content.slice(0, start) + before + selected + after + content.slice(end);
+        setContent(newText);
+
+        // riposiziona il cursore dopo l'inserimento
+        setTimeout(() => {
+            ta.focus();
+            const caret = start + before.length + (selected ? selected.length : 0);
+            ta.selectionStart = ta.selectionEnd = caret;
+        }, 0);
+    };
+
     return (
-        <div className="space-y-4">
-            <h2 className="text-2xl font-bold">Editor Articolo: {article.name}</h2>
+        <div className="space-y-6">
+            <style>{`
+      /* classe che useremo sul textarea */
+      .fancy-scroll {
+        scrollbar-width: thin; /* Firefox */
+        scrollbar-color: var(--scroll-thumb) var(--scroll-track); /* Firefox */
+      }
+
+      /* WebKit (Chrome, Edge, Safari) */
+      .fancy-scroll::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      .fancy-scroll::-webkit-scrollbar-track {
+        background: var(--scroll-track);
+        border-radius: 999px;
+      }
+      .fancy-scroll::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, var(--scroll-thumb), var(--scroll-thumb-hover));
+        border-radius: 999px;
+        border: 2px solid transparent;
+        background-clip: padding-box;
+      }
+      .fancy-scroll::-webkit-scrollbar-thumb:hover {
+        background: var(--scroll-thumb-hover);
+      }
+    `}</style>
+            {/* Titolo editor */}
+            <div className="pb-2 border-b">
+                <h2 className="text-2xl font-bold">
+                    Editor Articolo: {frontmatter.id ? frontmatter.id : "TBD"} – {frontmatter.titolo ? frontmatter.titolo : "Senza Titolo"}
+                </h2>
+            </div>
 
             {/* Campi frontmatter */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label className="block font-semibold mb-1">Titolo</label>
-                    <input
-                        type="text"
-                        value={frontmatter.titolo || ""}
-                        onChange={(e) => updateField("titolo", e.target.value)}
-                        className="w-full border rounded-md px-2 py-1"
-                    />
-                </div>
-                <div>
-                    <label className="block font-semibold mb-1">Sottotitolo</label>
-                    <input
-                        type="text"
-                        value={frontmatter.sottotitolo || ""}
-                        onChange={(e) => updateField("sottotitolo", e.target.value)}
-                        className="w-full border rounded-md px-2 py-1"
-                    />
-                </div>
-                <div>
-                    <label className="block font-semibold mb-1">Categoria</label>
-                    <input
-                        type="text"
-                        value={frontmatter.categoria || ""}
-                        onChange={(e) => updateField("categoria", e.target.value)}
-                        className="w-full border rounded-md px-2 py-1"
-                    />
-                </div>
-                <div>
-                    <label className="block font-semibold mb-1">Autore</label>
-                    <input
-                        type="text"
-                        value={frontmatter.autore || ""}
-                        onChange={(e) => updateField("autore", e.target.value)}
-                        className="w-full border rounded-md px-2 py-1"
-                    />
-                </div>
-                <div>
-                    <label className="block font-semibold mb-1">Data</label>
-                    <input
-                        type="date"
-                        value={frontmatter.data || ""}
-                        onChange={(e) => updateField("data", e.target.value)}
-                        className="w-full border rounded-md px-2 py-1"
-                    />
-                </div>
-                <div>
-                    <label className="block font-semibold mb-1">Tags (separati da virgola)</label>
-                    <input
-                        type="text"
-                        value={(frontmatter.tags || []).join(", ")}
-                        onChange={(e) => updateField("tags", e.target.value.split(",").map(t => t.trim()))}
-                        className="w-full border rounded-md px-2 py-1"
-                    />
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {[
+                    { key: "titolo", label: "Titolo", type: "text" },
+                    { key: "sottotitolo", label: "Sottotitolo", type: "text" },
+                    { key: "categoria", label: "Categoria", type: "text" },
+                    { key: "autore", label: "Autore", type: "text" },
+                    { key: "data", label: "Data", type: "date" },
+                    {
+                        key: "tags",
+                        label: "Tags (separati da virgola)",
+                        type: "text",
+                        transform: (val) => val.split(",").map((t) => t.trim()).filter(Boolean),
+                        stringify: (val) => (val || []).join(", "),
+                    },
+                ].map((field) => (
+                    <div key={field.key} className="flex flex-col">
+                        <label className="font-semibold mb-2 text-sm uppercase tracking-wide">
+                            {field.label}
+                        </label>
+
+                        {field.type === "date" ? (
+                            <div className="relative">
+                                <input
+                                    ref={(el) => (field.inputRef = el)}
+                                    type="date"
+                                    value={frontmatter.data || ""}
+                                    onChange={(e) => updateField(field.key, e.target.value)}
+                                    className={`w-full ${currentTheme.editorListItem} rounded-lg px-3 py-2 shadow-sm pr-10 appearance-none focus:outline-none`}
+                                />
+                                <CalendarIcon
+                                    onClick={() => field.inputRef?.showPicker()}
+                                    className={`w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2 ${currentTheme.editorText}`}
+                                />
+                            </div>
+                        ) : (
+                            <input
+                                type={field.type}
+                                value={field.stringify ? field.stringify(frontmatter[field.key]) : frontmatter[field.key] || ""}
+                                onChange={(e) =>
+                                    updateField(
+                                        field.key,
+                                        field.transform ? field.transform(e.target.value) : e.target.value
+                                    )
+                                }
+                                className={`w-full ${currentTheme.editorListItem} rounded-lg px-3 py-2 shadow-sm focus:outline-none`}
+                            />
+                        )}
+                    </div>
+                ))}
             </div>
 
-            {/* Contenuto Markdown */}
             <div>
-                <label className="block font-semibold mb-1">Contenuto</label>
-                <textarea
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    className="w-full h-96 border rounded-md px-2 py-1 font-mono"
-                />
+                <label className="block font-semibold mb-2 text-sm uppercase tracking-wide">
+                    Contenuto
+                </label>
+
+                {/* Toolbar Markdown */}
+                <div className="flex flex-wrap gap-2 mb-2">
+                    <button
+                        type="button"
+                        onClick={() => insertAtCursor("# ", "\n")}
+                        className={`px-2 py-1 text-sm rounded ${currentTheme?.editorListItem}`}
+                        title="H1"
+                    ><H1Icon className={"w-5 h-5"}/></button>
+
+                    <button
+                        type="button"
+                        onClick={() => insertAtCursor("## ", "\n")}
+                        className={`px-2 py-1 text-sm rounded ${currentTheme?.editorListItem}`}
+                        title="H2"
+                    ><H2Icon className={"w-5 h-5"}/></button>
+
+                    <button
+                        type="button"
+                        onClick={() => insertAtCursor("### ", "\n")}
+                        className={`px-2 py-1 text-sm rounded ${currentTheme?.editorListItem}`}
+                        title="H1"
+                    ><H3Icon className={"w-5 h-5"}/></button>
+
+                    <button
+                        type="button"
+                        onClick={() => insertAtCursor("**", "**")}
+                        className={`px-2 py-1 text-sm rounded ${currentTheme.editorListItem} font-bold`}
+                        title="Grassetto"
+                    ><BoldIcon className={"w-5 h-5"}/></button>
+
+                    <button
+                        type="button"
+                        onClick={() => insertAtCursor("_", "_")}
+                        className={`px-2 py-1 text-sm rounded ${currentTheme.editorListItem} italic`}
+                        title="Corsivo"
+                    ><ItalicIcon className={"w-5 h-5"}/></button>
+
+                    <button
+                        type="button"
+                        onClick={() => insertAtCursor("- ", "\n")}
+                        className={`px-2 py-1 text-sm rounded ${currentTheme.editorListItem}`}
+                        title="Lista"
+                    ><ListBulletIcon className={"w-5 h-5"}/></button>
+
+                    <button
+                        type="button"
+                        onClick={() => insertAtCursor("[", "](http://)")}
+                        className={`px-2 py-1 text-sm rounded ${currentTheme.editorListItem}`}
+                        title="Link"
+                    ><LinkIcon className={"w-5 h-5"}/></button>
+
+                    <button
+                        type="button"
+                        onClick={() => insertAtCursor("> ", "\n")}
+                        className={`px-2 py-1 text-sm rounded ${currentTheme.editorListItem}`}
+                        title="Citazione"
+                    ><ImQuotesLeft className={"w-5 h-5"}/></button>
+
+                    <MarkdownPhotoPicker images={images} insertAtCursor={insertAtCursor} />
+
+                    <button
+                        type="button"
+                        onClick={() => insertAtCursor("```js\n", "\n```")}
+                        className={`px-2 py-1 text-sm rounded ${currentTheme.editorListItem}`}
+                        title="Immagine"
+                    ><CodeBracketSquareIcon className={"w-5 h-5"}/></button>
+                </div>
+
+            <textarea
+                ref={textareaRef}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                className={`${currentTheme.editorListItem} w-full h-96 rounded-lg px-3 py-2 font-mono shadow-sm fancy-scroll focus:outline-none`}
+                style={scrollVars}
+            />
+        </div>
+
+
+    {/* Bottone salva */}
+            <div className="pt-4 border-t">
+                <button
+                    onClick={saveArticle}
+                    className={`px-6 py-3 rounded-lg font-medium shadow-md transition ${
+                        saving
+                            ? "bg-green-600/70 text-white cursor-not-allowed"
+                            : "bg-green-600 text-white hover:bg-green-700"
+                    }`}
+                    disabled={saving}
+                >
+                    {saving ? "Salvando..." : "💾 Salva Articolo"}
+                </button>
             </div>
-
-            <button
-                onClick={saveArticle}
-                className={`px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 ${saving ? "opacity-50 cursor-not-allowed" : ""}`}
-                disabled={saving}
-            >
-                {saving ? "Salvando..." : "💾 Salva Articolo"}
-            </button>
-
-            <ArticleContent content={content} />
         </div>
     );
+
 }
